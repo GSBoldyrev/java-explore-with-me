@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   stats-server:
-    build: stats-server
+    build: server
     image: stats-server
     container_name: explore-with-me-stats-server
     ports:
@@ -38,7 +38,7 @@ services:
       - POSTGRES_DB=ewm-db
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - EXPLORE-WITH-ME_STATS-SERVER_URL=http://stats-server:9090
+      - EXPLORE-WITH-ME_STATS-SERVER_URL=http://server:9090
 
   ewm-db:
     image: postgres:14-alpine
