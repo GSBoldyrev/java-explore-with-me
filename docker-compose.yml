@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   stats-server:
-    build: stats-server
+    build: stats-server/server
     image: stats-server
     container_name: explore-with-me-stats-server
     ports:
@@ -25,7 +25,7 @@ services:
       - POSTGRES_PASSWORD=GSBoldyrev
 
   ewm-service:
-    build: ewm-service
+    build: ewm-service/target/ewm-service-0.0.1-SNAPSHOT.jar
     image: ewm-service
     container_name: explore-with-me-ewm-service
     ports:
