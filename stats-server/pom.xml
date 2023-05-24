@@ -14,10 +14,10 @@
     <modules>
         <module>stats-client</module>
         <module>stats-dto</module>
-        <module>stats-server</module>
+        <module>server</module>
     </modules>
 
-    <artifactId>stats-service</artifactId>
+    <artifactId>stats-server</artifactId>
     <packaging>pom</packaging>
 
     <properties>
