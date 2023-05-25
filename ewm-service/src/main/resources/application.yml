@@ -32,5 +32,6 @@ logging:
         transaction:
           interceptor: TRACE
           nodeValue: INFO
+
 server:
   port: 8080
