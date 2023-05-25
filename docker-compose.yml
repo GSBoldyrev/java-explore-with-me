@@ -5,7 +5,7 @@ services:
     image: stats-server
     container_name: explore-with-me-stats-server
     ports:
-      - "8080:8080"
+      - "9090:9090"
     depends_on:
       - stats-db
     environment:
@@ -29,7 +29,7 @@ services:
     image: ewm-service
     container_name: explore-with-me-ewm-service
     ports:
-      - "9090:9090"
+      - "8080:8080"
     depends_on:
       - ewm-db
       - stats-server

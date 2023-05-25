@@ -31,7 +31,7 @@ public class TemporaryController {
                 hit.getApp(),
                 hit.getIp());
         hitClient.setRest(builder
-                .uriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:8080/hit"))
+                .uriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:9090/hit"))
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                 .build());
 
@@ -45,7 +45,7 @@ public class TemporaryController {
                                        @RequestParam(defaultValue = "false") boolean unique) {
 
         statsClient.setRest(builder
-                .uriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:8080/stats"))
+                .uriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:9090/stats"))
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                 .build());
         if (uris == null) {
