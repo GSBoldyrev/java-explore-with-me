@@ -5,7 +5,7 @@ services:
     image: stats-server
     container_name: explore-with-me-stats-server
     ports:
-      - "9090:9090"
+      - "8080:8080"
     depends_on:
       - stats-db
     environment:
@@ -29,26 +29,26 @@ services:
     image: ewm-service
     container_name: explore-with-me-ewm-service
     ports:
-      - "8080:8080"
+      - "9090:9090"
     depends_on:
       - ewm-db
       - stats-server
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5433/ewm-db
       - POSTGRES_DB=ewm-db
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root123
+      - POSTGRES_PASSWORD=root123
       - STATS_SERVER_URL=http://stats-server:9090
 
   ewm-db:
     image: postgres:14-alpine
     container_name: ewm-db
     ports:
-      - "6542:5433"
+      - "6541:5432"
     environment:
       - POSTGRES_DB=ewm-db
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=GSBoldyrev
+      - POSTGRES_PASSWORD=GSBoldyrev
 
 
     

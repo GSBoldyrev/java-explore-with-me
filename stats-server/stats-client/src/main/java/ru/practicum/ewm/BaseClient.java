@@ -13,10 +13,9 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 public class BaseClient {
-    protected final RestTemplate rest;
+    public RestTemplate rest;
 
-    public BaseClient(RestTemplate rest) {
-        this.rest = rest;
+    public BaseClient() {
     }
 
     protected ResponseEntity<Object> get(String path) {
@@ -102,5 +101,9 @@ public class BaseClient {
         }
 
         return responseBuilder.build();
+    }
+
+    public void setRest(RestTemplate rest) {
+        this.rest = rest;
     }
 }
