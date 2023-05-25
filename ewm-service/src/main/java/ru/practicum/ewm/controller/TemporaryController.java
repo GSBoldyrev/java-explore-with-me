@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.EndPointHitClient;
 import ru.practicum.ewm.ViewStatsClient;
 import ru.practicum.ewm.dto.EndpointHitDto;
-import ru.practicum.ewm.dto.ViewStatsDto;
-
-import java.util.List;
 
 
 @RestController
