@@ -1,14 +1,15 @@
 server:
   port: 8080
 
-
+stats-server:
+  url: http://localhost:9090
 
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    password: GSBoldyrev
-    username: GSBoldyrev
-    url: jdbc:postgresql://localhost:5432/ewm-db
+    password: postgres
+    username: root
+    url: jdbc:postgresql://ewm-db:5432/ewm_db
 
   config:
     activate:

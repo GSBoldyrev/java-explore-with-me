@@ -11,14 +11,14 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <artifactId>stats-service</artifactId>
+    <packaging>pom</packaging>
+
     <modules>
         <module>stats-client</module>
         <module>stats-dto</module>
         <module>stats-server</module>
     </modules>
-
-    <artifactId>stats-service</artifactId>
-    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -29,7 +29,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 
