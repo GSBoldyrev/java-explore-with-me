@@ -8,14 +8,10 @@ import ru.practicum.ewm.dto.EndpointHitDto;
 @Service
 public class EndPointHitClient extends BaseClient {
 
-
-
     @Autowired
     public EndPointHitClient() {
         super();
     }
-
-
 
     public ResponseEntity<Object> addHit(EndpointHitDto hit) {
 

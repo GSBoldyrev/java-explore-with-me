@@ -11,7 +11,6 @@ import ru.practicum.ewm.EndPointHitClient;
 import ru.practicum.ewm.ViewStatsClient;
 import ru.practicum.ewm.dto.EndpointHitDto;
 
-
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
@@ -20,10 +19,7 @@ public class TemporaryController {
 
     private final EndPointHitClient hitClient;
     private final ViewStatsClient statsClient;
-
     private final RestTemplateBuilder builder = new RestTemplateBuilder();
-
-
 
     @PostMapping(path = "/hit")
     public ResponseEntity<Object> addHit(@RequestBody EndpointHitDto hit) {
@@ -40,9 +36,9 @@ public class TemporaryController {
 
     @GetMapping(path = "stats")
     public ResponseEntity<Object> getStats(@RequestParam String start,
-                                       @RequestParam String end,
-                                       @RequestParam(required = false) String[] uris,
-                                       @RequestParam(defaultValue = "false") boolean unique) {
+                                           @RequestParam String end,
+                                           @RequestParam(required = false) String[] uris,
+                                           @RequestParam(defaultValue = "false") boolean unique) {
 
         statsClient.setRest(builder
                 .uriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:9090/stats"))
@@ -53,6 +49,5 @@ public class TemporaryController {
         } else {
             return statsClient.getSpecifiedStats(start, end, uris, unique);
         }
-
     }
 }
