@@ -75,7 +75,7 @@ public class EventService {
         }
 
         EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
-        Long views = getViews(List.of(event)).get(event.getId());
+        Long views = getViews(List.of(event)).get(event.getId().intValue());
         eventFullDto.setViews(views);
 
         return eventFullDto;
@@ -317,7 +317,7 @@ public class EventService {
         }
 
         EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
-        Long view = getViews(List.of(event)).get(event.getId());
+        Long view = getViews(List.of(event)).get(event.getId().intValue());
         eventFullDto.setViews(view);
 
         return eventFullDto;
@@ -349,7 +349,7 @@ public class EventService {
         return events.stream()
                 .map(event -> {
                     EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
-                    eventFullDto.setViews(views.getOrDefault(event.getId(), 0L));
+                    eventFullDto.setViews(views.getOrDefault(event.getId().intValue(), 0L));
                     return eventFullDto;
                 }).collect(Collectors.toList());
     }
@@ -361,7 +361,7 @@ public class EventService {
         return events.stream()
                 .map(event -> {
                     EventShortDto eventShortDto = EventMapper.toEventShortDto(event);
-                    eventShortDto.setViews(views.getOrDefault(event.getId(), 0L));
+                    eventShortDto.setViews(views.getOrDefault(event.getId().intValue(), 0L));
                     return eventShortDto;
                 }).collect(Collectors.toList());
     }
