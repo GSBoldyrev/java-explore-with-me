@@ -12,7 +12,7 @@ public class StatsMapper {
                 .app(hitDto.getApp())
                 .uri(hitDto.getUri())
                 .ip(hitDto.getIp())
-                .hit_at(LocalDateTime.now())
+                .hitAt(LocalDateTime.now())
                 .build();
     }
 
@@ -23,7 +23,7 @@ public class StatsMapper {
                 .app(hit.getApp())
                 .uri(hit.getUri())
                 .ip(hit.getIp())
-                .hit_at(hit.getHit_at())
+                .hitAt(hit.getHitAt())
                 .build();
     }
 }

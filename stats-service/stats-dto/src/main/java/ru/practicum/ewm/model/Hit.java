@@ -28,5 +28,5 @@ public class Hit {
     private String ip;
 
     @Column(name = "hit_at")
-    private LocalDateTime hit_at;
+    private LocalDateTime hitAt;
 }

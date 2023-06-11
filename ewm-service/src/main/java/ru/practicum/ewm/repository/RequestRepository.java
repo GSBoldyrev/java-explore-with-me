@@ -18,7 +18,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             "FROM Request AS r " +
             "WHERE r.requester.id = :requester")
     List<Request> findAllByRequester(@Param("requester") Long requester);
-    
+
     @Query("SELECT r " +
             "FROM Request r " +
             "WHERE r.event.initiator.id = :user AND r.event.id = :event AND r.id IN :requests " +
