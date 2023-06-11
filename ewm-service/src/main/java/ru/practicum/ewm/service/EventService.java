@@ -160,7 +160,7 @@ public class EventService {
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
         int partLimit = event.getParticipantLimit();
         int confRequests = event.getConfirmedRequests();
-        log.info("ПРАВКА ТЕСТОВ. У СОБЫТИЯ ЛИМИТ УЧАСТНИКОВ {} И {} ПОДТВЕРЖДЕННЫХ ЗАЯВОК", partLimit, confRequests );
+        log.info("ПРАВКА ТЕСТОВ. У СОБЫТИЯ ЛИМИТ УЧАСТНИКОВ {} И {} ПОДТВЕРЖДЕННЫХ ЗАЯВОК", partLimit, confRequests);
 
         if (partLimit == confRequests && partLimit != 0) {
             log.info("СЕЙЧАС БУДЕТ 409");
@@ -201,7 +201,7 @@ public class EventService {
                     if (partLimit - event.getConfirmedRequests() > 0
                             || partLimit == 0) {
                         request.setStatus(CONFIRMED);
-                        event.setConfirmedRequests(event.getConfirmedRequests()+1);
+                        event.setConfirmedRequests(event.getConfirmedRequests() + 1);
                         confirmedRequest.add(request);
                     } else {
                         request.setStatus(REJECTED);

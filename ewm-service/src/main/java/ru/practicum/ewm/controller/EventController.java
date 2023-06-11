@@ -31,7 +31,7 @@ public class EventController {
 
     @GetMapping("/users/{userId}/events/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public EventFullDto GetByIdByUser(@PathVariable Long userId,
+    public EventFullDto getByIdByUser(@PathVariable Long userId,
                                       @PathVariable Long eventId) {
 
         return service.getByIdByUser(userId, eventId);
