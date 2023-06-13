@@ -9,7 +9,7 @@ spring:
     driverClassName: org.postgresql.Driver
     password: root
     username: postgres
-    url: jdbc:postgresql://localhost:5432/ewm_db
+    url: jdbc:postgresql://ewm-db:5432/ewm_db
 
   config:
     activate:

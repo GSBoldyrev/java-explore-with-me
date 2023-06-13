@@ -10,7 +10,7 @@ spring:
     driverClassName: org.postgresql.Driver
     password: root
     username: postgres
-    url: jdbc:postgresql://localhost:5432/stats_db
+    url: jdbc:postgresql://stats-db:5432/stats_db
 
   jpa:
     properties:
