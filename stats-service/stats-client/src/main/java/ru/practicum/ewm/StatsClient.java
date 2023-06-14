@@ -38,10 +38,20 @@ public class StatsClient {
             end = to.format(dateTimeFormatter);
         }
 
-        log.info("ЗАПРОС СТАТИСТИКИ ПО ЭНДПОИНТАМ {}, C {} ПО {}", uris.toString(), start, end);
+        log.info("ЗАПРОС СТАТИСТИКИ В КЛИЕНТЕ ПО ЭНДПОИНТАМ {}, C {} ПО {}", uris.toString(), start, end);
+        StringBuilder str = new StringBuilder();
+        str.append(local + "/stats?start=");
+        str.append(start);
+        str.append("&end=");
+        str.append(end);
+        for (String s: uris) {
+            str.append("&uris=").append(s);
+        }
+        str.append("&unique=").append(unique);
+        String url = str.toString();
 
-        ResponseEntity<StatsDto[]> stats = rest.getForEntity(local + "/stats?start=" + start +
-                "&end=" + end + "&uris=" + uris + "&unique=" + unique, StatsDto[].class);
+        log.info("ПРАВКА ТЕСТОВ. КЛИЕНТ ОТПРАВЛЯЕТ ЗАПРОС ПО {}", url);
+        ResponseEntity<StatsDto[]> stats = rest.getForEntity(url, StatsDto[].class);
 
         return Arrays.asList(Objects.requireNonNull(stats.getBody()));
     }

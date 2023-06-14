@@ -31,8 +31,10 @@ public class StatsController {
                               @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
                               @RequestParam(required = false) List<String> uris,
                               @RequestParam(defaultValue = "false") boolean unique) {
-        log.info("ЗАПРОС СТАТИСТИКИ ПО ЭНДПОИНТАМ {} С {} ПО {}", uris.toString(), start, end);
+        log.info("ЗАПРОС СТАТИСТИКИ В СЕРВЕРЕ ПО ЭНДПОИНТАМ {} С {} ПО {}", uris, start, end);
+        List<StatsDto> stats = service.get(start, end, uris, unique);
+        log.info("ПРАВКА ТЕСТОВ. СЕРВЕР ОТПРАВЛЯЕТ СТАТИСТИКУ {}", stats.size());
 
-        return service.get(start, end, uris, unique);
+        return stats;
     }
 }

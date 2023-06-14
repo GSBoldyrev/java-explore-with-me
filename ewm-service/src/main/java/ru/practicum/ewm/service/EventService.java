@@ -12,7 +12,9 @@ import ru.practicum.ewm.error.ConflictException;
 import ru.practicum.ewm.error.NotFoundException;
 import ru.practicum.ewm.mapper.EventMapper;
 import ru.practicum.ewm.mapper.RequestMapper;
-import ru.practicum.ewm.misc.*;
+import ru.practicum.ewm.misc.EventSort;
+import ru.practicum.ewm.misc.EventState;
+import ru.practicum.ewm.misc.EventStateAction;
 import ru.practicum.ewm.model.Category;
 import ru.practicum.ewm.model.Event;
 import ru.practicum.ewm.model.Request;
@@ -24,10 +26,9 @@ import ru.practicum.ewm.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static ru.practicum.ewm.misc.RequestStatus.*;
@@ -167,9 +168,9 @@ public class EventService {
             throw new ConflictException("Participant limit for event reached");
         }
 
-        log.info("ПРАВКА ТЕСТОВ. В ЗАЯВКЕ {} ЗАПРОСОВ", updateRequest.getRequests());
+        log.info("ПРАВКА ТЕСТОВ. В ЗАЯВКЕ {} ЗАПРОСОВ", updateRequest.getRequestIds());
         log.info("ПРАВКА ТЕСТОВ. ЗАЯВКА НА {}", updateRequest.getStatus());
-        List<Request> requests = reqRepo.findAllByParam(userId, eventId, updateRequest.getRequests());
+        List<Request> requests = reqRepo.findAllByParam(userId, eventId, updateRequest.getRequestIds());
         log.info("ПРАВКА ТЕСТОВ. НАЙДЕНО ЗАЯВОК {}", requests.size());
 
         for (Request r: requests) {
@@ -264,7 +265,7 @@ public class EventService {
         }
 
         if (updateRequest.getEventDate() != null &&
-                updateRequest.getEventDate().isAfter(event.getEventDate().minusHours(1))) {
+                updateRequest.getEventDate().isBefore(event.getEventDate().minusHours(1))) {
             throw new BadRequestException("incorrect date");
         }
 
@@ -292,6 +293,10 @@ public class EventService {
                                       Boolean onlyAvailable, EventSort sort,
                                       Integer from, Integer size) {
 
+        if (rangeEnd != null && rangeStart != null && rangeEnd.isBefore(rangeStart)) {
+            throw new BadRequestException(("end date cannot be before start date"));
+        }
+
         Pageable page = PageRequest.of(from / size, size);
         List<Event> events = eventRepo
                 .findAllForPublicApi(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, page).stream()
@@ -318,30 +323,39 @@ public class EventService {
 
         EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
         Long view = getViews(List.of(event)).get(event.getId().intValue());
+        log.info("ПРАВКА ТЕСТОВ. КОЛИЧЕСТВО ПРОСМОТРОВ {}", view);
         eventFullDto.setViews(view);
 
         return eventFullDto;
     }
 
     public Map<Integer, Long> getViews(List<Event> events) {
+
+        log.info("ПРАВКА ТЕСТОВ. КОЛИЧЕСТВО СОБЫТИЙ В ЗАПРОСЕ {}", events.size());
         List<String> uris = events.stream()
                 .map(Event::getId)
                 .map(id -> String.format("/events/%s", id))
                 .collect(Collectors.toUnmodifiableList());
+        log.info("ПРАВКА ТЕСТОВ. ОТПРАВЛЯЕТСЯ СТРОКА {}", uris);
 
         LocalDateTime start = LocalDateTime.of(2020, 1, 1, 0, 0);
         LocalDateTime end = LocalDateTime.now();
 
         List<StatsDto> stats = statsClient.get(start, end, uris, false);
+        log.info("ПРАВКА ТЕСТОВ. ПОЛУЧИЛИ СТАТИСТИКУ {}", stats.size());
+        Map<Integer, Long> views = new HashMap<>();
+        if (stats.size() == 0) {
+            return views;
+        }
+        int statsCounter = 0;
+        for (Event e: events) {
+            while (stats.size() >= events.size()) {
+                views.put(Math.toIntExact(e.getId()), stats.get(statsCounter).getHits());
+                statsCounter++;
+            }
+        }
 
-        return stats.stream()
-                .filter(viewDto -> viewDto.getApp().equals("ewm-service"))
-                .collect(Collectors.toMap(viewDto -> {
-                                    Pattern pattern = Pattern.compile("/events/([0-9]*)");
-                                    Matcher matcher = pattern.matcher(viewDto.getUri());
-                                    return Integer.parseInt(matcher.group(1));
-                                },
-                                StatsDto::getHits));
+        return views;
     }
 
     public List<EventFullDto> toFullDtoWithViews(List<Event> events) {

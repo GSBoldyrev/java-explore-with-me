@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class RequestStatusDto {
 
-    List<Long> requests;
+    List<Long> requestIds;
     RequestStatus status;
 }
