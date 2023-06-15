@@ -7,8 +7,8 @@ stats-server:
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    password: postgres
-    username: root
+    password: root
+    username: postgres
     url: jdbc:postgresql://ewm-db:5432/ewm_db
 
   config:

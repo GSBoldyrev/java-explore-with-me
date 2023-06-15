@@ -1,6 +1,10 @@
 server:
   port: 9090
 
+stats-server:
+  url: http://localhost:9090
+
+
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
