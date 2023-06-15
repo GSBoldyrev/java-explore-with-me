@@ -18,7 +18,7 @@ import java.util.Objects;
 @Component
 @Slf4j
 public class StatsClient {
-    private final String local = "http://localhost:9090";
+    private final String local = "http://stats-server:9090";
     private final RestTemplate rest = new RestTemplate();
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
