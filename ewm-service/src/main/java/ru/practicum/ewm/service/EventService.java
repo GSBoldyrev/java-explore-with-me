@@ -339,19 +339,27 @@ public class EventService {
         log.info("ПРАВКА ТЕСТОВ. ОТПРАВЛЯЕТСЯ СТРОКА {}", uris);
 
         LocalDateTime start = LocalDateTime.of(2020, 1, 1, 0, 0);
-        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime end = LocalDateTime.of(2025, 1, 1, 0, 0);
 
-        List<StatsDto> stats = statsClient.get(start, end, uris, false);
+        List<StatsDto> stats = statsClient.get(start, end, uris, true);
         log.info("ПРАВКА ТЕСТОВ. ПОЛУЧИЛИ СТАТИСТИКУ {}", stats.size());
         Map<Integer, Long> views = new HashMap<>();
         if (stats.size() == 0) {
             return views;
         }
-        int statsCounter = 0;
-        for (Event e: events) {
-            while (stats.size() >= events.size()) {
-                views.put(Math.toIntExact(e.getId()), stats.get(statsCounter).getHits());
-                statsCounter++;
+        for (StatsDto s: stats) {
+            log.info("ПРАВКА ТЕСТОВ. URI {}", s.getUri());
+            if (s.getUri().equals("/events")) {
+                views.put(0, s.getHits());
+            } else {
+                String path = s.getUri().split("/")[2];
+                log.info("НАШЛИ СТАТИТСТИКУ ДЛЯ СОБЫТИЯ {}", path);
+                int statsId = Integer.parseInt(path);
+                for (Event e : events) {
+                    if (e.getId() == statsId) {
+                        views.put(statsId, s.getHits());
+                    }
+                }
             }
         }
 
