@@ -51,7 +51,7 @@ public class SubscriptionService {
                 .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
         User follower = userRepo.findById(followerId)
                 .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
-        if(follower.getPrivateProfile()) {
+        if (follower.getPrivateProfile()) {
             throw new ConflictException("User has closed account, you can not follow him");
         }
         List<User> followers;
@@ -91,13 +91,13 @@ public class SubscriptionService {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
 
-        if(user.getSubscribedOn() == null) {
+        if (user.getSubscribedOn() == null) {
             throw new ConflictException("You do not have followers yet!");
         }
 
         List<User> followers = user.getSubscribedOn();
 
-        Pageable pageRequest = PageRequest.of(from/size, size);
+        Pageable pageRequest = PageRequest.of(from / size, size);
         int start = (int) pageRequest.getOffset();
         int end = Math.min((start + pageRequest.getPageSize()), followers.size());
 
