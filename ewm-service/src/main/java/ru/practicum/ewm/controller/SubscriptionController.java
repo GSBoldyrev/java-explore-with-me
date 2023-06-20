@@ -42,7 +42,7 @@ public class SubscriptionController {
         return service.cancelSubscription(userId, followerId);
     }
 
-    @GetMapping("/{userId}/subscriptions/")
+    @GetMapping("/{userId}/subscriptions")
     @ResponseStatus(HttpStatus.OK)
     public Page<UserFullDto> getFollowers(@PathVariable Long userId,
                                           @RequestParam(name = "from", defaultValue = "0") int from,

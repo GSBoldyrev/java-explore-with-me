@@ -225,7 +225,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/4/subscriptions/",
+					"raw": "http://localhost:8080/users/4/subscriptions",
 					"host": [
 						"http://localhost:8080"
 					],
