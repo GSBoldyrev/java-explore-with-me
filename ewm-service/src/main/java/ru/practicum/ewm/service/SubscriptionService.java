@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.practicum.ewm.dto.EventShortDto;
 import ru.practicum.ewm.dto.SubscriptionDto;
 import ru.practicum.ewm.dto.UserFullDto;
 import ru.practicum.ewm.dto.UserShortDto;
@@ -14,7 +15,6 @@ import ru.practicum.ewm.error.ConflictException;
 import ru.practicum.ewm.error.NotFoundException;
 import ru.practicum.ewm.mapper.EventMapper;
 import ru.practicum.ewm.mapper.UserMapper;
-import ru.practicum.ewm.model.Event;
 import ru.practicum.ewm.model.User;
 import ru.practicum.ewm.repository.EventRepository;
 import ru.practicum.ewm.repository.UserRepository;
@@ -113,11 +113,14 @@ public class SubscriptionService {
                 .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
 
         List<SubscriptionDto> result = new ArrayList<>();
-        List<User> followers = user.getSubscribedOn();
-        for (User u: followers) {
-            List<Event> events = eventRepo.findAllForInitiator(u.getId());
-            result.add(new SubscriptionDto(toUserShortDto(u),
-                    events.stream().map(EventMapper::toEventShortDto).collect(Collectors.toList())));
+        List<UserShortDto> followers = user.getSubscribedOn().stream()
+                .map(UserMapper::toUserShortDto)
+                .collect(Collectors.toList());
+        for (UserShortDto u: followers) {
+            List<EventShortDto> events = eventRepo.findAllForInitiator(u.getId()).stream()
+                    .map(EventMapper::toEventShortDto)
+                    .collect(Collectors.toList());
+            result.add(new SubscriptionDto(u, events));
         }
 
         return result;
@@ -127,12 +130,14 @@ public class SubscriptionService {
 
         userRepo.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
-        User follower = userRepo.findById(followerId)
+        UserShortDto follower = userRepo.findById(followerId)
+                .map(UserMapper::toUserShortDto)
                 .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
 
-        List<Event> events = eventRepo.findAllForInitiator(followerId);
+        List<EventShortDto> events = eventRepo.findAllForInitiator(followerId).stream()
+                .map(EventMapper::toEventShortDto)
+                .collect(Collectors.toList());
 
-        return new SubscriptionDto(toUserShortDto(follower),
-                events.stream().map(EventMapper::toEventShortDto).collect(Collectors.toList()));
+        return new SubscriptionDto(follower, events);
     }
 }
