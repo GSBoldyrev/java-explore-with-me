@@ -21,6 +21,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("SELECT e FROM Event AS e WHERE e.initiator.id = :initiator ORDER BY e.created DESC")
     List<Event> findAllForInitiator(@Param("initiator") long initiator, Pageable page);
 
+    @Query("SELECT e FROM Event AS e WHERE e.initiator.id = :initiator ORDER BY e.created DESC")
+    List<Event> findAllForInitiator(@Param("initiator") long initiator);
+
     @Query("SELECT e FROM Event AS e " +
             "JOIN e.initiator AS u " +
             "JOIN e.category AS c " +
